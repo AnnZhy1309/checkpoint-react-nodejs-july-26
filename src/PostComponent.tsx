@@ -1,4 +1,11 @@
-export default function PostComp({postArr, id, }){
+type PostCompType = {
+        content: string,
+        id:number,
+        toGet:Function,
+        postArr:[]
+    }
+    
+    export default function PostComp({postArr, id, content}:PostCompType){
 
     const API_URL="http://localhost:3001/api/posts";
 
@@ -23,8 +30,7 @@ export default function PostComp({postArr, id, }){
     }
 
     return(
-    <div>
-         {postArr.map}
+    <div>{content}
     <button onClick={()=>{
         toDelete(id)}}>Delete</button>
     <button onClick={()=>{

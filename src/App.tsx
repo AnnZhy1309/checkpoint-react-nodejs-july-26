@@ -19,7 +19,9 @@ const toPost = async({content})=>{
     },
     body: JSON.stringify({ text: content }),
 });
-response.json();
+let responseJson = await response.json();
+let responseData = responseJson.list;
+setDataList(responseData);
 }
 
 const toGet = async()=>{
@@ -30,9 +32,9 @@ const toGet = async()=>{
     "Content-Type": "application/json",
     },
 });
-  let responseJson = await response.json();
-  let responseData = responseJson.list;
-  setDataList(responseData);
+let responseJson = await response.json();
+let responseData = responseJson.list;
+setDataList(responseData);
 }
 
 useEffect(()=>{
@@ -51,12 +53,25 @@ useEffect(()=>{
 
   return <div className="main-content">
     <div>
-      <input type="text" ref={inputRef}/>
-      <button onClick={toPost}>Save</button>
+      <input type="text" ref={inputRef} />
+      <button onClick={async()=>{
+          const response = await fetch(API_URL, {
+            method: "POST",
+            mode: "cors",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ value: text }),
+        });
+        let responseJson = await response.json();
+        let responseData = responseJson.list;
+        setDataList(responseData);
+        }
+      }>Save</button>
     </div>
     <div>
       {dataList.map((item)=>(
-      <PostComp></PostComp>))}
+      <PostComp postArr={postArr} id={item.id} content={item.content} toGet={toGet}></PostComp>))}
     </div>
     <button onClick={sort}>Sort</button>
     <button onClick={sortReverse}>Reverse sort</button>
